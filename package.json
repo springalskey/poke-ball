@@ -1,0 +1,28 @@
+{
+  "name": "monster-ball",
+  "version": "0.0.2",
+  "description": "",
+  "main": "index.js",
+  "preferGlobal": "true",
+  "bin":{
+    "mb":"app"
+  },
+  "scripts": {
+    "start": "npm publish .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zhentaoo/monster-ball"
+  },
+  "keywords":[
+    "commander",
+    "vuejs",
+    "node"
+  ],
+  "author": "zhentaoo",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^2.9.0"
+  }
+}

@@ -1,0 +1,35 @@
+#!/usr/bin/env node
+
+var program = require('commander');
+
+program
+  .usage('[command] <options>')
+  .version(require('./package.json').version)
+  .option('-n, --name[value]', '项目名称')
+  .option('-p, --path[value]', '项目路径')
+
+program
+  .command('new <projectName>')
+  .description('create new project')
+  .action(function(data) {
+    console.log('create new project');
+    console.log(data);
+  })
+
+program
+  .command('test <projectPath>')
+  .description('test a project')
+  .action(function(data) {
+    console.log('test a project');
+  })
+
+program.parse(process.argv);
+
+
+if (program.name) {
+  console.log(' -n name');
+}
+
+if (program.path) {
+  console.log(' -p path');
+}
