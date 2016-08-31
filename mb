@@ -1,6 +1,11 @@
 #!/usr/bin/env node
 
 var program = require('commander');
+var child_process = require('child_process');
+
+function copyDir(src, dist) {
+  child_process.spawn('cp', ['-r', src, dist]);
+}
 
 program
   .usage('[command] <options ...>')
@@ -13,8 +18,8 @@ program
   .command('new <projectName>')
   .description('create new project')
   .action(function(data) {
-    console.log('create new project');
-    console.log(data);
+    copyDir('./vue',__dirname + data)
+    console.log('create new project',data);
   })
 
 program
