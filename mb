@@ -2,6 +2,7 @@
 
 var program = require('commander');
 var child_process = require('child_process');
+var version = require('./package.json').version;
 
 function copyDir(src, dist) {
   child_process.spawn('cp', ['-r', src, dist]);
@@ -9,17 +10,18 @@ function copyDir(src, dist) {
 
 program
   .usage('[command] <options ...>')
-  .version(require('./package.json').version)
+  .version(version)
   .option('-n, --name', '项目名称')
   .option('-s, --super', '定制化')
   .option('-p, --path', '项目路径')
+  .option('-v, --version', 'monster-ball version')
 
 program
   .command('new <projectName>')
   .description('create new project')
   .action(function(data) {
-    copyDir('./vue',__dirname + data)
-    console.log('create new project',data);
+    copyDir('./vue', __dirname + '/' + data)
+    console.log('create new project', data);
   })
 
 program
@@ -40,10 +42,10 @@ if (program.path) {
   console.log('program.path');
 }
 
-if (program.joy){
+if (program.joy) {
   console.log('program.joy');
 }
 
-if (program.name) {
-  // console.log('program.name');
-}
+// if (program.version) {
+//   console.log('monster-ball version:',version);
+// }
