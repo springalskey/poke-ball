@@ -24,10 +24,10 @@ program
   .command('new <projectName>')
   .description('create new project')
   .action(function(data) {
-    // console.log('cwd',process.cwd());
-    // console.log('__dirname',__dirname);
-    // console.log('__process.execPath',process.execPath);
-    copyDir('./vue', __dirname + '/' + data)
+    console.log('cwd', process.cwd());
+    console.log('__dirname', __dirname);
+    console.log('__process.execPath', process.execPath);
+    copyDir(__dirname + '/vue', process.cwd() + '/' + data)
     console.log('create new project', data);
   })
 
