@@ -17,7 +17,8 @@
     "build": "rm -rf dist && cross-env NODE_ENV=production webpack --progress --hide-modules",
     "stage-check": "if [[ ! -z $(git diff) ]]; then echo '✖ you should stage files first' && exit 1; fi ",
     "lint": "ADDED=$(git diff-index --cached HEAD --name-only --diff-filter ACMR | egrep '.(js|vue)$') eslint --ext js,vue ${ADDED:-src}",
-    "fix": "eslint --fix --ext js,vue src; exit 0"
+    "fix": "eslint --fix --ext js,vue src; exit 0",
+    "files": "node files.js"
   },
   "pre-commit": {
     "run": [

@@ -1,0 +1,6 @@
+extends: standard
+plugins: [vue]
+rules:
+  comma-dangle: [error, only-multiline]
+  no-var: ["error"]
+  semi: ["error", "always"]
