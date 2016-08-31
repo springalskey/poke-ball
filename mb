@@ -16,19 +16,17 @@ program
   .usage('[command] <options ...>')
   .version(version)
   .option('-n, --name', '项目名称')
-  .option('-s, --super', '定制化')
   .option('-p, --path', '项目路径')
   .option('-v, --version', 'monster-ball version')
 
+// <>必填参数，[]可选参数
 program
-  .command('new <projectName>')
+  .command('new <projectName> [option1] [option2]')
   .description('create new project')
-  .action(function(data) {
-    console.log('cwd', process.cwd());
-    console.log('__dirname', __dirname);
-    console.log('__process.execPath', process.execPath);
+  .action(function(data, option1, option2) {
+    console.log('args:', data, option1, option2);
     copyDir(__dirname + '/vue', process.cwd() + '/' + data)
-    console.log('create new project', data);
+    console.log('create new project success:', data);
   })
 
 program
@@ -37,7 +35,7 @@ program
   .action(function(data) {
     console.log(data);
 
-    child_process.exec('node '+ __dirname +'/template/files.js module ' + data, function(err, stdout, stderr) {
+    child_process.exec('node ' + __dirname + '/template/files.js module ' + data, function(err, stdout, stderr) {
       if (err) {
         console.log(err);
       }
@@ -48,7 +46,6 @@ program
         console.log(stderr);
       }
     })
-
     console.log('create a module ');
   })
 
@@ -61,19 +58,12 @@ program
 
 program.parse(process.argv);
 
-
-if (program.super) {
-  console.log('program.super');
-}
-
 if (program.path) {
-  console.log('program.path');
+  console.log('cwd', process.cwd());
+  console.log('__dirname', __dirname);
+  console.log('__process.execPath', process.execPath);
 }
 
 if (program.joy) {
   console.log('program.joy');
 }
-
-// if (program.version) {
-//   console.log('monster-ball version:',version);
-// }
