@@ -1,11 +1,11 @@
 {
   "name": "monster-ball",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "",
   "main": "index.js",
   "preferGlobal": "true",
   "bin":{
-    "mb":"app"
+    "mb":"mb"
   },
   "scripts": {
     "start": "npm publish .",
