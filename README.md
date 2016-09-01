@@ -6,9 +6,9 @@
 	npm install poke-ball -g
 
 #####Feature
-- pb -h
-- pb new projectName [option1] [option2]
-- pb module moduleName
+- kk -h
+- kk new projectName [option1] [option2]
+- kk module moduleName
 
 ##### tips
 	<>:必填参数，［］可选参数

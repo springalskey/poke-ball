@@ -1,11 +1,11 @@
 {
   "name": "poke-ball",
-  "version": "0.1.9",
+  "version": "0.2.1",
   "description": "",
   "main": "index.js",
   "preferGlobal": "true",
   "bin":{
-    "pb":"pb"
+    "kk":"kk"
   },
   "scripts": {
     "start": "npm publish .",

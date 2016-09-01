@@ -24,7 +24,7 @@ program
   .command('new <projectName> [option1] [option2]')
   .description('create new project')
   .action(function(data, option1, option2) {
-    console.log('args:', data, option1, option2);
+    console.log('args:', data);
     copyDir(__dirname + '/vue', process.cwd() + '/' + data)
     console.log('create new project success:', data);
   })
