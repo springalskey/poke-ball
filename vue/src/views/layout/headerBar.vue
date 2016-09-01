@@ -15,6 +15,6 @@
 
 <template>
   <nav>
-    <span>饿了么中后台系统</span>
+    <span>后台系统</span>
   </nav>
 </template>
