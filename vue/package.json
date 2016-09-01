@@ -8,7 +8,7 @@
   "license": "UNLICENSE",
   "homepage": "",
   "repository": {
-    "type": "git",
+    "type": "git"
   },
   "scripts": {
     "start": "npm run dev",
