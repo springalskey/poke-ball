@@ -3,7 +3,7 @@
 
 
 #####Installation
-	npm install monster-ball -g
+	npm install poke-ball -g
 
 #####Feature
 - pb -h

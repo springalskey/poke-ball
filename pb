@@ -17,7 +17,7 @@ program
   .version(version)
   .option('-n, --name', '项目名称')
   .option('-p, --path', '项目路径')
-  .option('-v, --version', 'monster-ball version')
+  .option('-v, --version', 'poke-ball version')
 
 // <>必填参数，[]可选参数
 program
