@@ -1,11 +1,11 @@
 {
   "name": "poke-ball",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "",
   "main": "index.js",
   "preferGlobal": "true",
-  "bin":{
-    "kk":"kk"
+  "bin": {
+    "kk": "kk"
   },
   "scripts": {
     "start": "npm publish .",
@@ -15,7 +15,7 @@
     "type": "git",
     "url": "https://github.com/zhentaoo/poke-ball"
   },
-  "keywords":[
+  "keywords": [
     "commander",
     "vuejs",
     "node"
@@ -23,6 +23,7 @@
   "author": "zhentaoo",
   "license": "ISC",
   "dependencies": {
+    "colors": "^1.1.2",
     "commander": "^2.9.0"
   }
 }

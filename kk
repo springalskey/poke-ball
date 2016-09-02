@@ -2,6 +2,8 @@
 
 var program = require('commander');
 var child_process = require('child_process');
+var colors = require('colors');
+
 var version = require('./package.json').version;
 var FileTools = require('./tools/file.js').FileTools;
 var DirTools = require('./tools/file.js').DirTools;
@@ -44,23 +46,37 @@ program
         isProjectPath = true;
     })
     if (!isProjectPath) {
-      console.log('this is not a valid path');
+      console.log('this is not a valid path'.red);
       return;
     }
 
+    if (DirTools.isExist(`${process.cwd()}/src/views/${moduleName}`)) {
+      console.log('该模块已存在'.red);
+      return;
+    }
     // 创建module Dir
     DirTools.mkDir(`${process.cwd()}/src/views/${moduleName}`);
-
-    // 读取模版内容
-    var content = FileTools.readFile(`${__dirname}/template/module/module.vue`).toString();
-    console.log(`${__dirname}/template/module/module.vue`);
-    // 替换模版内容
-    content = content.replace(/{moduleName}/,moduleName);
-
-    console.log('content nr:', content);
+    console.log(`create directory ${moduleName}`.green);
 
     // 创建module文件
+    var content = FileTools.readFile(`${__dirname}/template/module/module.vue`).toString();
+    content = content.replace(/{moduleName}/g, moduleName);
     FileTools.createFile(`${process.cwd()}/src/views/${moduleName}/${moduleName}.vue`, content);
+    console.log(`create module file : ${moduleName}.vue`.green);
+
+    // 创建 vuex action
+    var content = FileTools.readFile(`${__dirname}/template/action.js`).toString();
+    content = content.replace(/{moduleName}/g, moduleName);
+    content = content.replace(/{MODULENAME}/g, moduleName);
+    FileTools.createFile(`${process.cwd()}/src/vuex/actions/${moduleName}Action.js`, content);
+    console.log(`create vuex action file:${moduleName}Action.js`.green);
+
+    // 创建 vuex modules
+    var content = FileTools.readFile(`${__dirname}/template/module.js`).toString();
+    content = content.replace(/{MODULENAME}/g, moduleName);
+    FileTools.createFile(`${process.cwd()}/src/vuex/modules/${moduleName}Mutation.js`, content);
+    console.log(`create vuex modules file:${moduleName}Mutation.js`.green);
+
 
     // child_process.exec('node ' + __dirname + '/template/files.js module ' + data, function(err, stdout, stderr) {
     //   if (err) {
@@ -74,7 +90,7 @@ program
     //   }
     // })
 
-    console.log('create a module: ' + moduleName);
+    console.log(`create a module: ${moduleName}`.green);
   })
 
 program

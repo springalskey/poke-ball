@@ -50,8 +50,9 @@ var DirTools = {
   mkDir: function(path) {
     if (!DirTools.isExist(path)) {
       var data = fs.mkdirSync(path);
+      return data;
     } else {
-      console.log('该文件夹已存在');
+      return false;
     }
   },
   //删除文件夹
