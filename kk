@@ -3,6 +3,8 @@
 var program = require('commander');
 var child_process = require('child_process');
 var version = require('./package.json').version;
+var FileTools = require('./tools/file.js').FileTools;
+var DirTools = require('./tools/file.js').DirTools;
 
 function copyDir(src, dist) {
   try {
@@ -20,6 +22,7 @@ program
   .option('-v, --version', 'poke-ball version')
 
 // <>必填参数，[]可选参数
+// __dirname：当前执行文件所在目录; process.cwd():当前工作目录
 program
   .command('new <projectName> [option1] [option2]')
   .description('create new project')
@@ -32,21 +35,46 @@ program
 program
   .command('module <moduleName>')
   .description('create module')
-  .action(function(data) {
-    console.log(data);
-
-    child_process.exec('node ' + __dirname + '/template/files.js module ' + data, function(err, stdout, stderr) {
-      if (err) {
-        console.log(err);
-      }
-      if (stdout) {
-        console.log(stdout);
-      }
-      if (stderr) {
-        console.log(stderr);
-      }
+  .action(function(moduleName) {
+    // 判断当前目录是否有效，有没有‘src’目录
+    var dirList = DirTools.readDir(process.cwd());
+    var isProjectPath = false;
+    dirList.forEach(function(el) {
+      if (el == 'src')
+        isProjectPath = true;
     })
-    console.log('create a module ');
+    if (!isProjectPath) {
+      console.log('this is not a valid path');
+      return;
+    }
+
+    // 创建module Dir
+    DirTools.mkDir(`${process.cwd()}/src/views/${moduleName}`);
+
+    // 读取模版内容
+    var content = FileTools.readFile(`${__dirname}/template/module/module.vue`).toString();
+    console.log(`${__dirname}/template/module/module.vue`);
+    // 替换模版内容
+    content = content.replace(/{moduleName}/,moduleName);
+
+    console.log('content nr:', content);
+
+    // 创建module文件
+    FileTools.createFile(`${process.cwd()}/src/views/${moduleName}/${moduleName}.vue`, content);
+
+    // child_process.exec('node ' + __dirname + '/template/files.js module ' + data, function(err, stdout, stderr) {
+    //   if (err) {
+    //     console.log(err);
+    //   }
+    //   if (stdout) {
+    //     console.log(stdout);
+    //   }
+    //   if (stderr) {
+    //     console.log(stderr);
+    //   }
+    // })
+
+    console.log('create a module: ' + moduleName);
   })
 
 program
