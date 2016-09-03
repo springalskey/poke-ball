@@ -6,10 +6,10 @@
 	npm install monster-ball -g
 
 #####Feature
-- mb -h
-- mb new projectName [option1] [option2]
-- mb module moduleName
+- kk -h
+- kk new projectName [option1] [option2]
+- kk module moduleName
 
-##### tips 
+##### tips
  - <>:必填参数，［］可选参数
  - 创建一个module时，请确保在vuejs 项目目录下
