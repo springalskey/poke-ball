@@ -15,7 +15,7 @@ export const add = ({ commit }, data) => {
 };
 
 // 删除
-export const delete = ({ commit }, id) => {
+export const del = ({ commit }, id) => {
   amtApi
     .{moduleName}Resource()
     .delete(id)
