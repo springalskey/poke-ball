@@ -7,8 +7,7 @@ const isProd = process.env.NODE_ENV === 'production';
 
 const config = {
   entry: {
-    app: './src/main.js',
-    vendor: ['vue']
+    app: './src/main.js'
   },
   output: {
     publicPath: 'http://localhost:8088/',

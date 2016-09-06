@@ -1,0 +1,16 @@
+#main {
+  display: flex;
+  min-height: 860px;
+}
+
+#left-side {
+  width: 168px;
+  margin-top: -1px;
+}
+
+#content {
+  flex: auto;
+  padding: 20px;
+}
+
+

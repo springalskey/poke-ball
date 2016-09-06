@@ -1,20 +1,28 @@
 <style scoped lang="sass">
-  nav {
-    line-height: 3;
-    color: #c0ccda;
-    font-size: 24px;
-    background: #324057;
-    text-align: center;
+  .nav {
+    display: flex;
+    align-items: stretch;
   }
-  a {
-    color: white;
-    text-decoration: none;
-    width: 100px;
+  h3 {
+    color: #fff;
+    margin-left: 34px;
+  }
+  .nav-menu {
+    margin-left: 40px;
+    display: flex;
+    align-items: center;
   }
 </style>
 
 <template>
-  <nav>
-    <span>后台系统</span>
-  </nav>
+  <div class="nav nav-dark">
+    <h3>中后台系统</h3>
+    <div class="nav-menu">
+      <el-menu theme="dark" active-index="1">
+        <el-menu-item index="1">处理中心</el-menu-item>
+        <el-menu-item index="2">我的工作台</el-menu-item>
+        <el-menu-item index="3">订单管理</el-menu-item>
+      </el-menu>
+    </div>
+  </div>
 </template>

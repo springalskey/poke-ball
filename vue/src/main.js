@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import router from './views/router';
+import router from './views/index';
 import Element from 'element-ui';
 import App from './views/app.vue';
 import store from './vuex/store';
@@ -11,7 +11,5 @@ Vue.use(VueResource);
 new Vue({
   router,
   store,
-  render: h => h(App),
-  components: {
-  }
+  render: h => h(App)
 }).$mount('#app');
