@@ -4,9 +4,9 @@ var program = require('commander');
 var child_process = require('child_process');
 var colors = require('colors');
 
-var version = require('./package.json').version;
-var FileTools = require('./tools/file.js').FileTools;
-var DirTools = require('./tools/file.js').DirTools;
+var version = require('../package.json').version;
+var FileTools = require('../tools/file.js').FileTools;
+var DirTools = require('../tools/file.js').DirTools;
 
 function copyDir(src, dist) {
   try {
@@ -30,7 +30,7 @@ program
   .description('create new project')
   .action(function(data, option1, option2) {
     console.log('args:', data);
-    copyDir(__dirname + '/vue', process.cwd() + '/' + data)
+    copyDir(__dirname + '/../vue', process.cwd() + '/' + data)
     console.log('create new project success:', data);
   })
 
@@ -76,19 +76,6 @@ program
     content = content.replace(/{MODULENAME}/g, moduleName);
     FileTools.createFile(`${process.cwd()}/src/vuex/modules/${moduleName}Mutation.js`, content);
     console.log(`create vuex modules file:${moduleName}Mutation.js`.green);
-
-
-    // child_process.exec('node ' + __dirname + '/template/files.js module ' + data, function(err, stdout, stderr) {
-    //   if (err) {
-    //     console.log(err);
-    //   }
-    //   if (stdout) {
-    //     console.log(stdout);
-    //   }
-    //   if (stderr) {
-    //     console.log(stderr);
-    //   }
-    // })
 
     console.log(`create a module: ${moduleName}`.green);
   })
