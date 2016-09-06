@@ -5,7 +5,7 @@
   "main": "index.js",
   "preferGlobal": "true",
   "bin": {
-    "kk": "kk"
+    "kk": "bin/kk"
   },
   "scripts": {
     "start": "npm publish .",

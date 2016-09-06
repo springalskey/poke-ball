@@ -1,7 +1,6 @@
 <template>
   <div>
-    <h1>{moduleName}</h1>
-    <br>
+    <h1>首页-订单列表s</h1>
   </div>
 </template>
 
@@ -10,6 +9,6 @@
     data () {
       return {
       };
-    }
+    },
   };
 </script>
