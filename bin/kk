@@ -73,7 +73,7 @@ program
 
     // 创建 vuex modules
     var content = FileTools.readFile(`${__dirname}/../template/module.js`).toString();
-    content = content.replace(/{MODULENAME}/g, moduleName.toUpperCase);
+    content = content.replace(/{MODULENAME}/g, moduleName.toUpperCase());
     FileTools.createFile(`${process.cwd()}/src/vuex/modules/${moduleName}Mutation.js`, content);
     console.log(`create vuex modules file:${moduleName}Mutation.js success`.green);
 
