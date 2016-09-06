@@ -56,28 +56,28 @@ program
     }
     // 创建module Dir
     DirTools.mkDir(`${process.cwd()}/src/views/${moduleName}`);
-    console.log(`create directory ${moduleName}`.green);
+    console.log(`create module directory ${moduleName} success`.green);
 
     // 创建module文件
     var content = FileTools.readFile(`${__dirname}/../template/module/index.js`).toString();
     content = content.replace(/{moduleName}/g, moduleName);
     FileTools.createFile(`${process.cwd()}/src/views/${moduleName}/index.js`, content);
-    console.log(`create module file : ${moduleName}.vue`.green);
+    console.log(`create module file : index.js success`.green);
 
     // 创建 vuex action
     var content = FileTools.readFile(`${__dirname}/../template/action.js`).toString();
     content = content.replace(/{moduleName}/g, moduleName);
-    content = content.replace(/{MODULENAME}/g, moduleName);
+    content = content.replace(/{MODULENAME}/g, moduleName.toUpperCase());
     FileTools.createFile(`${process.cwd()}/src/vuex/actions/${moduleName}Action.js`, content);
-    console.log(`create vuex action file:${moduleName}Action.js`.green);
+    console.log(`create vuex action file:${moduleName}Action.js success`.green);
 
     // 创建 vuex modules
     var content = FileTools.readFile(`${__dirname}/../template/module.js`).toString();
-    content = content.replace(/{MODULENAME}/g, moduleName);
+    content = content.replace(/{MODULENAME}/g, moduleName.toUpperCase);
     FileTools.createFile(`${process.cwd()}/src/vuex/modules/${moduleName}Mutation.js`, content);
-    console.log(`create vuex modules file:${moduleName}Mutation.js`.green);
+    console.log(`create vuex modules file:${moduleName}Mutation.js success`.green);
 
-    console.log(`create a module: ${moduleName}`.green);
+    console.log(`create  module: ${moduleName} success`.green);
   })
 
 program
