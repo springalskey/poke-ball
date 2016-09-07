@@ -16,8 +16,8 @@
 
 #####lesson
  - npm全局安装 poke-ball
- ![](./doc/v-1.png)
+ - ![](./doc/v-1.png)
  - 进入工作目录，新建seed project
- ![](./doc/v-2.png)
+ - ![](./doc/v-2.png)
  - 进入seed，新建module
- ![](./doc/v-3.png)
+ - ![](./doc/v-3.png)
