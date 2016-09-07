@@ -7,6 +7,7 @@ var colors = require('colors');
 var version = require('../package.json').version;
 var FileTools = require('../tools/file.js').FileTools;
 var DirTools = require('../tools/file.js').DirTools;
+var path = require('../tools/path');
 
 program.parse(process.argv)
 
@@ -23,5 +24,5 @@ for (var k in dirList)
     return;
   }
 
-child_process.spawn('cp', ['-r', __dirname + '/../vue', process.cwd() + '/' + projectName]);
+child_process.spawn('cp', ['-r', path.CLI_VUE, process.cwd() + '/' + projectName]);
 console.log(`new project ${projectName} success`.green);

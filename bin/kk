@@ -1,15 +1,33 @@
 #!/usr/bin/env node
-var path = require('../tools/path');
-console.log('CWD_PATH:',path.CWD_PATH);
-console.log('CWD_PATH:',path.ROOT_PATH);
-console.log('CWD_PATH:',path.SRC_PATH);
 
-require('commander')
+var path = require('../tools/path');
+var program = require('commander');
+var colors = require('colors');
+
+program
   .version(require('../package.json').version)
   .usage('<command> [options]')
   .command('new', 'new a vue project seed')
-  .command('module', 'create module')
-  .command('submodule', 'create submodule')
+  .command('views', 'create views')
+  .command('subviews', 'create subviews')
   .command('directive', 'create directive')
-  .option('-p','CWD_PATH,ROOT_PATH,SRC_PATH')
+  .option('-p, --path', '路径')
   .parse(process.argv);
+
+if (program.path) {
+  console.log('seed path ------'.green);
+
+  console.log('SEED_ROOT_PATH', path.SEED_ROOT_PATH);
+  console.log('SEED_SRC', path.SEED_SRC);
+  console.log('SEED_SRC_VIEWS', path.SEED_SRC_VIEWS);
+  console.log('SEED_SRC_VUEX', path.SEED_SRC_VUEX);
+
+  console.log('cli path------'.green);
+  console.log('CLI_ROOT_PATH', path.CLI_ROOT_PATH);
+  console.log('CLI_VUE', path.CLI_VUE);
+  console.log('CLI_TEM', path.CLI_TEM);
+  console.log('CLI_TEM_VIEWS', path.CLI_TEM_VIEWS);
+  console.log('CLI_TEM_VUEX', path.CLI_TEM_VUEX);
+  console.log('path end------'.green);
+
+}

@@ -8,11 +8,11 @@
 #####Feature
 - kk -h
 - kk new projectName [option1] [option2]
-- kk module moduleName
+- kk views viewsName
 
 ##### tips
  - <>:必填参数，［］可选参数
- - 创建一个module时，请确保在vuejs 项目目录下
+ - 创建views,subviews,directive...时，请确保在vuejs 项目目录下
 
 #####lesson
  - npm全局安装 poke-ball
