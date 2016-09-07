@@ -39,7 +39,7 @@ DirTools.mkDir(`${path.SEED_SRC_VIEWS}/${moduleName}`);
 console.log(`create module directory ${moduleName} success`.green);
 
 // 创建module文件
-var content = FileTools.readFile(`${CLI_TEM_VIEWS}/index.js`).toString();
+var content = FileTools.readFile(`${path.CLI_TEM_VIEWS}/index.js`).toString();
 content = content.replace(/{moduleName}/g, moduleName);
 FileTools.createFile(`${path.SEED_SRC_VIEWS}/${moduleName}/index.js`, content);
 console.log(`create module file : index.js success`.green);
@@ -54,7 +54,7 @@ console.log(`create vuex action file:${moduleName}Action.js success`.green);
 // 创建 vuex modules
 var content = FileTools.readFile(`${path.CLI_TEM_VIEWS}/index.js`).toString();
 content = content.replace(/{MODULENAME}/g, moduleName.toUpperCase());
-FileTools.createFile(`${path.SEED_SRC_VIEWS}/${moduleName}Mutation.js`, content);
+FileTools.createFile(`${path.SEED_SRC_VUEX}/modules/${moduleName}Mutation.js`, content);
 console.log(`create vuex modules file:${moduleName}Mutation.js success`.green);
 
 console.log(`create  module: ${moduleName} success`.green);
