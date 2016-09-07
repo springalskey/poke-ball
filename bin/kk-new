@@ -8,93 +8,20 @@ var version = require('../package.json').version;
 var FileTools = require('../tools/file.js').FileTools;
 var DirTools = require('../tools/file.js').DirTools;
 
-function copyDir(src, dist) {
-  try {
-    child_process.spawn('cp', ['-r', src, dist]);
-  } catch (e) {
-    console.log(e);
+program.parse(process.argv)
+
+var args = program.args;
+var projectName = args[0];
+
+console.log("kk-new args:", args);
+
+var dirList = DirTools.readDir(process.cwd());
+
+for (var k in dirList)
+  if (dirList[k] == projectName) {
+    console.log(`the project ${projectName} is exist`.red);
+    return;
   }
-}
 
-program
-  .usage('[command] <options ...>')
-  .version(version)
-  .option('-n, --name', '项目名称')
-  .option('-p, --path', '项目路径')
-  .option('-v, --version', 'poke-ball version')
-
-// <>必填参数，[]可选参数
-// __dirname：当前执行文件所在目录; process.cwd():当前工作目录
-program
-  .command('new <projectName> [option1] [option2]')
-  .description('create new project')
-  .action(function(data, option1, option2) {
-    console.log('args:', data);
-    copyDir(__dirname + '/../vue', process.cwd() + '/' + data)
-    console.log('create new project success:', data);
-  })
-
-program
-  .command('module <moduleName>')
-  .description('create module')
-  .action(function(moduleName) {
-    // 判断当前目录是否有效，有没有‘src’目录
-    var dirList = DirTools.readDir(process.cwd());
-    var isProjectPath = false;
-    dirList.forEach(function(el) {
-      if (el == 'src')
-        isProjectPath = true;
-    })
-    if (!isProjectPath) {
-      console.log('this is not a valid path'.red);
-      return;
-    }
-
-    if (DirTools.isExist(`${process.cwd()}/src/views/${moduleName}`)) {
-      console.log('该模块已存在'.red);
-      return;
-    }
-    // 创建module Dir
-    DirTools.mkDir(`${process.cwd()}/src/views/${moduleName}`);
-    console.log(`create directory ${moduleName}`.green);
-
-    // 创建module文件
-    var content = FileTools.readFile(`${__dirname}/template/module/module.vue`).toString();
-    content = content.replace(/{moduleName}/g, moduleName);
-    FileTools.createFile(`${process.cwd()}/src/views/${moduleName}/${moduleName}.vue`, content);
-    console.log(`create module file : ${moduleName}.vue`.green);
-
-    // 创建 vuex action
-    var content = FileTools.readFile(`${__dirname}/template/action.js`).toString();
-    content = content.replace(/{moduleName}/g, moduleName);
-    content = content.replace(/{MODULENAME}/g, moduleName);
-    FileTools.createFile(`${process.cwd()}/src/vuex/actions/${moduleName}Action.js`, content);
-    console.log(`create vuex action file:${moduleName}Action.js`.green);
-
-    // 创建 vuex modules
-    var content = FileTools.readFile(`${__dirname}/template/module.js`).toString();
-    content = content.replace(/{MODULENAME}/g, moduleName);
-    FileTools.createFile(`${process.cwd()}/src/vuex/modules/${moduleName}Mutation.js`, content);
-    console.log(`create vuex modules file:${moduleName}Mutation.js`.green);
-
-    console.log(`create a module: ${moduleName}`.green);
-  })
-
-program
-  .command('test <projectPath>')
-  .description('test a project')
-  .action(function(data) {
-    console.log('test a project');
-  })
-
-program.parse(process.argv);
-
-if (program.path) {
-  console.log('cwd', process.cwd());
-  console.log('__dirname', __dirname);
-  console.log('__process.execPath', process.execPath);
-}
-
-if (program.joy) {
-  console.log('program.joy');
-}
+child_process.spawn('cp', ['-r', __dirname + '/../vue', process.cwd() + '/' + projectName]);
+console.log(`new project ${projectName} success`.green);
