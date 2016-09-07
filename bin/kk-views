@@ -34,16 +34,35 @@ if (DirTools.isExist(`${path.SEED_SRC_VIEWS}/${moduleName}`)) {
   return;
 }
 
-// 创建module Dir
+/** VIEWS **/
+// 创建views/module Dir
 DirTools.mkDir(`${path.SEED_SRC_VIEWS}/${moduleName}`);
 console.log(`create module directory ${moduleName} success`.green);
 
-// 创建module文件
+// 创建views/module/list Dir
+DirTools.mkDir(`${path.SEED_SRC_VIEWS}/${moduleName}/list`);
+console.log(`create module/list directory ${moduleName}/list success`.green);
+
+// 创建views/module/index.js文件
 var content = FileTools.readFile(`${path.CLI_TEM_VIEWS}/index.js`).toString();
 content = content.replace(/{moduleName}/g, moduleName);
 FileTools.createFile(`${path.SEED_SRC_VIEWS}/${moduleName}/index.js`, content);
 console.log(`create module file : index.js success`.green);
 
+// 创建views/module/list/list.vue 文件
+var content = FileTools.readFile(`${path.CLI_TEM_VIEWS}/list/list.vue`).toString();
+content = content.replace(/{moduleName}/g, moduleName);
+FileTools.createFile(`${path.SEED_SRC_VIEWS}/${moduleName}/list/list.vue`,content);
+console.log(`create module/list file : list.vue success`.green);
+
+// 修改views/route.js
+var content = FileTools.readFile(`${path.SEED_SRC_VIEWS}/route.js`);
+console.log(content.toString());
+
+content = content.replace(/export default \[/,`import ${moduleName}Routes from './${moduleName}';\nexport default \[\n  ...${moduleName}Routes,\n`);
+FileTools.createFile(`${path.SEED_SRC_VIEWS}/route.js`,content);
+
+/** VUEX **/
 // 创建 vuex action
 var content = FileTools.readFile(`${path.CLI_TEM_VUEX}/action.js`).toString();
 content = content.replace(/{moduleName}/g, moduleName);

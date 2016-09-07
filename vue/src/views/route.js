@@ -1,7 +1,5 @@
 import OrderRoutes from './order';
 
-let routes = [
+export default [
   ...OrderRoutes,
 ];
-
-export default routes;
