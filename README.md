@@ -13,3 +13,11 @@
 ##### tips
  - <>:必填参数，［］可选参数
  - 创建一个module时，请确保在vuejs 项目目录下
+
+#####lesson
+ - npm全局安装 poke-ball
+ ![](./doc/v-1.png)
+ - 进入工作目录，新建seed project
+ ![](./doc/v-2.png)
+ - 进入seed，新建module
+ ![](./doc/v-3.png)
