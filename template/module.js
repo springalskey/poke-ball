@@ -15,7 +15,7 @@ const mutations = {
     state.list = data;
   },
 
-  [types.{MODULENAME}_DELETE] (state, data) {
+  [types.{MODULENAME}_DEL] (state, data) {
     state.data = data;
   }
 };

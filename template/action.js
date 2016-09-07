@@ -18,9 +18,9 @@ export const add = ({ commit }, data) => {
 export const del = ({ commit }, id) => {
   amtApi
     .{moduleName}Resource()
-    .delete(id)
+    .del(id)
     .then(result => {
-      commit(types.{MODULENAME}_DELETE, result);
+      commit(types.{MODULENAME}_DEL, result);
     });
 };
 
