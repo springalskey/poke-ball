@@ -1,4 +1,8 @@
 #!/usr/bin/env node
+var path = require('../tools/path');
+console.log('CWD_PATH:',path.CWD_PATH);
+console.log('CWD_PATH:',path.ROOT_PATH);
+console.log('CWD_PATH:',path.SRC_PATH);
 
 require('commander')
   .version(require('../package.json').version)
@@ -7,4 +11,5 @@ require('commander')
   .command('module', 'create module')
   .command('submodule', 'create submodule')
   .command('directive', 'create directive')
+  .option('-p','CWD_PATH,ROOT_PATH,SRC_PATH')
   .parse(process.argv);
