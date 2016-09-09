@@ -55,12 +55,11 @@ content = content.replace(/{moduleName}/g, moduleName);
 FileTools.createFile(`${path.SEED_SRC_VIEWS}/${moduleName}/list/list.vue`,content);
 console.log(`create module/list file : list.vue success`.green);
 
-// 修改views/route.js
-var content = FileTools.readFile(`${path.SEED_SRC_VIEWS}/route.js`);
-console.log(content.toString());
+// 修改views/index(route).js
+var content = FileTools.readFile(`${path.SEED_SRC_VIEWS}/index.js`).toString();
 
-content = content.replace(/export default \[/,`import ${moduleName}Routes from './${moduleName}';\nexport default \[\n  ...${moduleName}Routes,\n`);
-FileTools.createFile(`${path.SEED_SRC_VIEWS}/route.js`,content);
+content = content.replace(/\nexport default \[/,`import ${moduleName}Routes from './${moduleName}';\n\nexport default [\n  ...${moduleName}Routes,`);
+FileTools.createFile(`${path.SEED_SRC_VIEWS}/index.js`,content);
 
 /** VUEX **/
 // 创建 vuex action
