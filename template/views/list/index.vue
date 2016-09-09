@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>{moduleName}列表</h1>
+    <h1>{moduleName}</h1>
   </div>
 </template>
 

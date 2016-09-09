@@ -28,6 +28,40 @@ if (!isProjectPath) {
   console.log('this is not a valid path'.red);
   return;
 }
+// 判断参数是否有‘／’符号，如果有创建subviews
+if (moduleName.indexOf('/') != -1) {
+  var subModuleName = moduleName.split('/')[1];
+  var moduleName = moduleName.split('/')[0];
+
+  //判断需要创建的模块是否存在
+  if (!DirTools.isExist(`${path.SEED_SRC_VIEWS}/${moduleName}`)) {
+    console.log('该模块不存在'.red);
+    return;
+  }
+  // 判断需要创建的子模块是否存在
+  if (DirTools.isExist(`${path.SEED_SRC_VIEWS}/${moduleName}/${subModuleName}`)) {
+    console.log('该子模块已经存在'.red);
+    return;
+  }
+
+  // 创建子模块文件夹
+  DirTools.mkDir(`${path.SEED_SRC_VIEWS}/${moduleName}/${subModuleName}`);
+  console.log(`create views/${moduleName}/${subModuleName} success`.green);
+
+  // 创建子模块index.vue文件
+  var content = FileTools.readFile(`${path.CLI_TEM_VIEWS}/list/index.vue`).toString();
+  content = content.replace('{moduleName}', moduleName + '/' + subModuleName);
+  FileTools.createFile(`${path.SEED_SRC_VIEWS}/${moduleName}/${subModuleName}/index.vue`, content);
+  console.log(`create views/${moduleName}/${subModuleName}/index.vue success`.green);
+
+  // 修改模块路由
+  var content = FileTools.readFile(`${path.SEED_SRC_VIEWS}/${moduleName}/index.js`).toString();
+  content = content.replace(/\nexport default \[/, `import ${subModuleName.firstUppserCase()} from './${subModuleName}/index.vue';\n\nexport default [\n  { path: '/${subModuleName}', component: ${subModuleName.firstUppserCase()}, name: '${moduleName}.${subModuleName}' },`);
+  FileTools.createFile(`${path.SEED_SRC_VIEWS}/${moduleName}/index.js`, content)
+  console.log(`update views/${moduleName}/index.js success`.green);
+
+  return;
+}
 
 //判断需要创建的模块是否存在
 if (DirTools.isExist(`${path.SEED_SRC_VIEWS}/${moduleName}`)) {
@@ -50,16 +84,16 @@ content = content.replace(/{moduleName}/g, moduleName);
 FileTools.createFile(`${path.SEED_SRC_VIEWS}/${moduleName}/index.js`, content);
 console.log(`create module file : index.js success`.green);
 
-// 创建views/module/list/list.vue 文件
-var content = FileTools.readFile(`${path.CLI_TEM_VIEWS}/list/list.vue`).toString();
+// 创建views/module/list/index.vue 文件
+var content = FileTools.readFile(`${path.CLI_TEM_VIEWS}/list/index.vue`).toString();
 content = content.replace(/{moduleName}/g, moduleName);
-FileTools.createFile(`${path.SEED_SRC_VIEWS}/${moduleName}/list/list.vue`,content);
-console.log(`create module/list file : list.vue success`.green);
+FileTools.createFile(`${path.SEED_SRC_VIEWS}/${moduleName}/list/index.vue`, content);
+console.log(`create module/index file : index.vue success`.green);
 
 // 修改views/index(route).js
 var content = FileTools.readFile(`${path.SEED_SRC_VIEWS}/index.js`).toString();
-content = content.replace(/\nexport default \[/,`import ${moduleName.firstUppserCase()}Routes from './${moduleName}';\n\nexport default [\n  ...${moduleName.firstUppserCase()}Routes,`);
-FileTools.createFile(`${path.SEED_SRC_VIEWS}/index.js`,content);
+content = content.replace(/\nexport default \[/, `import ${moduleName.firstUppserCase()}Routes from './${moduleName}';\n\nexport default [\n  ...${moduleName.firstUppserCase()}Routes,`);
+FileTools.createFile(`${path.SEED_SRC_VIEWS}/index.js`, content);
 
 /** VUEX **/
 // 创建 vuex action
