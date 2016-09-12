@@ -15,9 +15,7 @@
     "dev": "webpack-dev-server --inline --hot --open",
     "build": "rm -rf dist && cross-env NODE_ENV=production webpack --progress --hide-modules",
     "stage-check": "if [[ ! -z $(git diff) ]]; then echo '✖ you should stage files first' && exit 1; fi ",
-    "lint": "ADDED=$(git diff-index --cached HEAD --name-only --diff-filter ACMR | egrep '.(js|vue)$') eslint --ext js,vue ${ADDED:-src}",
-    "fix": "eslint --fix --ext js,vue src; exit 0",
-    "files": "node files.js"
+    "lint": "ADDED=$(git diff-index --cached HEAD --name-only --diff-filter ACMR | egrep '.(js|vue)$') eslint --ext js,vue ${ADDED:-src}"
   },
   "pre-commit": {
     "run": [
@@ -28,12 +26,16 @@
   },
   "dependencies": {
     "element-ui": "^1.0.0-rc.1",
+    "lodash": "^4.15.0",
+    "moment": "^2.14.1",
     "vue": "^2.0.0-rc.3",
     "vue-resource": "^0.9.3",
     "vue-router": "^2.0.0-rc.3",
-    "vuex": "^2.0.0-rc.5"
+    "vuex": "^2.0.0-rc.5",
+    "lodash": "^4.15.0"
   },
   "devDependencies": {
+    "autoprefixer": "^6.4.0",
     "babel-core": "^6.0.0",
     "babel-loader": "^6.0.0",
     "babel-plugin-component": "^0.4.0",
@@ -44,8 +46,10 @@
     "css-loader": "^0.23.1",
     "eslint-plugin-vue": "^0.1.1",
     "extract-text-webpack-plugin": "^2.0.0-beta.3",
+    "faker": "^3.1.0",
     "file-loader": "^0.8.4",
     "html-webpack-plugin": "^2.22.0",
+    "json-server": "^0.8.19",
     "node-sass": "^3.8.0",
     "postcss-cssnext": "^2.7.0",
     "postcss-loader": "^0.10.1",
