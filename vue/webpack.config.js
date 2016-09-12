@@ -97,13 +97,13 @@ var config = {
     })
   ],
   devServer: {
-    host: 'xy.dev.elenet.me',
+    host: '127.0.0.1',
     port: 8088,
     historyApiFallback: true,
     noInfo: true,
     proxy: {
       '/baseApi/webapi': {
-        target: 'http://vpca-jaws-api-1.vm.elenet.me:8088',
+        target: 'http:/sns.zhentaoo.me:8088',
       },
       '/mock': {
         target: 'http://localhost:9090'

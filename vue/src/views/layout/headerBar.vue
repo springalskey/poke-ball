@@ -12,11 +12,14 @@
     display: flex;
     align-items: center;
   }
+  ul{
+    display: inherit;
+  }
 </style>
 
 <template>
   <div class="nav nav-dark">
-    <h3>中后台系统</h3>
+    <h3>系统</h3>
     <div class="nav-menu">
       <el-menu theme="dark" active-index="1">
         <el-menu-item index="1">处理中心</el-menu-item>
