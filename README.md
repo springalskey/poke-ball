@@ -3,16 +3,19 @@
 
 
 #####Installation
-	npm install monster-ball -g
+	npm install poke-ball -g
 
 #####Feature
 - kk -h
-- kk new projectName [option1] [option2]
-- kk views viewsName
+- kk new projectName (create project)
+- kk views viewsName (add module/views)
+- kk views viewsName/subViewsName (add subModule/subViews)
 
 ##### tips
  - <>:必填参数，［］可选参数
  - 创建views,subviews,directive...时，请确保在vuejs 项目目录下
+ - views 相当于module
+ - 创建subviews时，views必须要存在
 
 #####lesson
  - npm全局安装 poke-ball

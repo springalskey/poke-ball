@@ -56,8 +56,8 @@ if (moduleName.indexOf('/') != -1) {
 
   // 修改模块路由
   var content = FileTools.readFile(`${path.SEED_SRC_VIEWS}/${moduleName}/index.js`).toString();
-  content = content.replace(/\nexport default \[/, `import ${subModuleName.firstUppserCase()} from './${subModuleName}/index.vue';\n\nexport default [\n  { path: '/${subModuleName}', component: ${subModuleName.firstUppserCase()}, name: '${moduleName}.${subModuleName}' },`);
-  FileTools.createFile(`${path.SEED_SRC_VIEWS}/${moduleName}/index.js`, content)
+  content = content.replace(/\nexport default \[/, `import ${subModuleName.firstUppserCase()} from './${subModuleName}/index.vue';\n\nexport default [\n  { path: '/${moduleName}/${subModuleName}', component: ${subModuleName.firstUppserCase()}, name: '${moduleName}.${subModuleName}' },`);
+  FileTools.createFile(`${path.SEED_SRC_VIEWS}/${moduleName}/index.js`, content);
   console.log(`update views/${moduleName}/index.js success`.green);
 
   return;
@@ -86,7 +86,7 @@ console.log(`create module file : index.js success`.green);
 
 // 创建views/module/list/index.vue 文件
 var content = FileTools.readFile(`${path.CLI_TEM_VIEWS}/list/index.vue`).toString();
-content = content.replace(/{moduleName}/g, moduleName);
+content = content.replace(/{moduleName}/g, moduleName+'/list');
 FileTools.createFile(`${path.SEED_SRC_VIEWS}/${moduleName}/list/index.vue`, content);
 console.log(`create module/index file : index.vue success`.green);
 
