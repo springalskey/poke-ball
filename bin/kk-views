@@ -62,11 +62,9 @@ if (moduleName.indexOf('/') != -1) {
 
   // 修改layout/sideMenu
   var content = FileTools.readFile(`${path.SEED_SRC_VIEWS}/layout/sideMenu.vue`).toString();
-  console.log(content);
-  content = content.replace(/<\/el-submenu>/,
-       `<el-menu-item index="/${moduleName}/list">list</el-menu-item>
-        <el-menu-item index="/${moduleName}/${subModuleName}">${subModuleName}</el-menu-item>`);
-        console.log(content);
+  content = content.replace(`<!-- subviews:${moduleName} -->`,
+       `<el-menu-item index="/${moduleName}/${subModuleName}">${subModuleName}</el-menu-item>
+        <!-- subviews:${moduleName} -->`);
   FileTools.createFile(`${path.SEED_SRC_VIEWS}/layout/sideMenu.vue`,content);
 
   return;
@@ -111,6 +109,7 @@ content = content.replace(/<\/el-menu>/,
      `  <el-submenu index="sub_2">
         <template slot="title"><i class="el-icon-menu"></i>${moduleName}</template>
         <el-menu-item index="/${moduleName}/list">list</el-menu-item>
+        <!-- subviews:${moduleName} -->
       </el-submenu>
     <\/el-menu>`);
 FileTools.createFile(`${path.SEED_SRC_VIEWS}/layout/sideMenu.vue`,content);
