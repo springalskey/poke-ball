@@ -9,8 +9,10 @@ program
   .usage('<command> [options]')
   .command('new', 'new a vue project seed')
   .command('views', 'create views')
-  .command('subviews', 'create subviews')
   .command('directive', 'create directive')
+  .command('component', 'create component')
+  .command('filter', 'create filter')
+  .command('resource', 'create resource')
   .option('-p, --path', '路径')
   .parse(process.argv);
 

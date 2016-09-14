@@ -1,28 +1,44 @@
 #!/usr/bin/env node
 
 var program = require('commander');
-var child_process = require('child_process');
 var colors = require('colors');
 
 var version = require('../package.json').version;
 var FileTools = require('../tools/file.js').FileTools;
 var DirTools = require('../tools/file.js').DirTools;
 var path = require('../tools/path');
+require('../tools/string');
 
 program.parse(process.argv)
 
 var args = program.args;
-var projectName = args[0];
+var directiveName = args[0];
 
 console.log("kk-directive args:", args);
 
-var dirList = DirTools.readDir(process.cwd());
-
+var dirList = DirTools.readDir(process.cwd()+'/src/directive');
+console.log(dirList);
+// 判断是不是已经有这个directive
 for (var k in dirList)
-  if (dirList[k] == projectName) {
-    console.log(`the project ${projectName} is exist`.red);
+  if (dirList[k] == directiveName) {
+    console.log(`the directiveName ${directiveName} is exist`.red);
     return;
   }
 
-child_process.spawn('cp', ['-r', path.CLI_VUE, process.cwd() + '/' + projectName]);
-console.log(`new project ${projectName} success`.green);
+// 把client directive copy到seed下
+var content = FileTools.readFile(`${path.CLI_TEM_DIRECTIVE}/index.js`).toString();
+FileTools.createFile(`${path.SEED_SRC_DIRECTIVE}/${directiveName}.js`,content);
+
+// 修改seed/src/directive/index.js
+var content = FileTools.readFile(`${path.SEED_SRC_DIRECTIVE}/index.js`).toString();
+content = content.replace('/** directive inject**/',`
+import ${directiveName} from './${directiveName}.js';
+
+/** directive inject**/
+
+Vue.directive('kk${directiveName.firstUppserCase()}', ${directiveName});
+
+`);
+FileTools.createFile(`${path.SEED_SRC_DIRECTIVE}/index.js`,content);
+
+console.log(`new directiveName ${directiveName} success`.green);
