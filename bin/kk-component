@@ -14,7 +14,7 @@ program.parse(process.argv)
 var args = program.args;
 var projectName = args[0];
 
-console.log("kk-directive args:", args);
+console.log("kk-new args:", args);
 
 var dirList = DirTools.readDir(process.cwd());
 
