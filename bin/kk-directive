@@ -20,7 +20,7 @@ var dirList = DirTools.readDir(process.cwd() + '/src/directive');
 console.log(dirList);
 // 判断是不是已经有这个directive
 for (var k in dirList)
-  if (dirList[k] == directiveName) {
+  if (dirList[k] == directiveName+'.js') {
     console.log(`the directiveName ${directiveName} is exist`.red);
     return;
   }

@@ -11,6 +11,7 @@ exports.SEED_SRC_VUEX = path.join(seedRootPath,'src/vuex');
 exports.SEED_SRC_DIRECTIVE = path.join(seedRootPath,'src/directive');
 exports.SEED_SRC_COMPONENTS = path.join(seedRootPath,'src/components');
 exports.SEED_SRC_RESOURCE = path.join(seedRootPath,'src/resource');
+exports.SEED_SRC_FILTER = path.join(seedRootPath,'src/filters');
 
 /* cli文件夹路径：*/
 // bin文件执行目录，的上级目录
@@ -24,3 +25,4 @@ exports.CLI_TEM_VUEX = path.join(cliRootPath, 'template/vuex');
 exports.CLI_TEM_DIRECTIVE = path.join(cliRootPath,'template/directive');
 exports.CLI_TEM_COMPONENT = path.join(cliRootPath,'template/component');
 exports.CLI_TEM_RESOURCE = path.join(cliRootPath,'template/resource');
+exports.CLI_TEM_FILTER = path.join(cliRootPath,'template/filter');
