@@ -21,4 +21,4 @@ exports.CLI_TEM = path.join(cliRootPath, 'template');
 exports.CLI_TEM_VIEWS = path.join(cliRootPath, 'template/views');
 exports.CLI_TEM_VUEX = path.join(cliRootPath, 'template/vuex');
 exports.CLI_TEM_DIRECTIVE = path.join(cliRootPath,'template/directive');
-exports.CLI_TEM_COMPONENTS = path.join(cliRootPath,'template/components');
+exports.CLI_TEM_COMPONENT = path.join(cliRootPath,'template/component');

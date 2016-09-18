@@ -40,10 +40,4 @@ Vue.directive('kk${directiveName.firstUppserCase()}', ${directiveName});
  `);
 FileTools.createFile(`${path.SEED_SRC_DIRECTIVE}/index.js`, content);
 
-/** directive inject**/
-
-// Vue.directive('kk${directiveName.firstUppserCase()}', ${directiveName});
-//
-// FileTools.createFile(`${path.SEED_SRC_DIRECTIVE}/index.js`,content);
-
 console.log(`new directiveName ${directiveName} success`.green);
