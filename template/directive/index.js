@@ -1,6 +1,3 @@
-/** example **/
-// <h1 v-test="test">nb/list</h1>
-
 import Vue from 'vue';
 
 export default {

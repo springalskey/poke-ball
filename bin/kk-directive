@@ -16,7 +16,7 @@ var directiveName = args[0];
 
 console.log("kk-directive args:", args);
 
-var dirList = DirTools.readDir(process.cwd()+'/src/directive');
+var dirList = DirTools.readDir(process.cwd() + '/src/directive');
 console.log(dirList);
 // 判断是不是已经有这个directive
 for (var k in dirList)
@@ -25,20 +25,25 @@ for (var k in dirList)
     return;
   }
 
-// 把client directive copy到seed下
+  // 把client directive copy到seed下
 var content = FileTools.readFile(`${path.CLI_TEM_DIRECTIVE}/index.js`).toString();
-FileTools.createFile(`${path.SEED_SRC_DIRECTIVE}/${directiveName}.js`,content);
+FileTools.createFile(`${path.SEED_SRC_DIRECTIVE}/${directiveName}.js`, content);
 
 // 修改seed/src/directive/index.js
 var content = FileTools.readFile(`${path.SEED_SRC_DIRECTIVE}/index.js`).toString();
-content = content.replace('/** directive inject**/',`
-import ${directiveName} from './${directiveName}.js';
+content = content.replace('\n/** directive inject**/\n',
+  `import ${directiveName} from './${directiveName}.js'
 
 /** directive inject**/
 
 Vue.directive('kk${directiveName.firstUppserCase()}', ${directiveName});
+ `);
+FileTools.createFile(`${path.SEED_SRC_DIRECTIVE}/index.js`, content);
 
-`);
-FileTools.createFile(`${path.SEED_SRC_DIRECTIVE}/index.js`,content);
+/** directive inject**/
+
+// Vue.directive('kk${directiveName.firstUppserCase()}', ${directiveName});
+//
+// FileTools.createFile(`${path.SEED_SRC_DIRECTIVE}/index.js`,content);
 
 console.log(`new directiveName ${directiveName} success`.green);
