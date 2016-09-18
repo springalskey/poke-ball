@@ -20,7 +20,7 @@ var dirList = DirTools.readDir(process.cwd() + '/src/resource');
 console.log(dirList);
 // 判断是不是已经有这个resource
 for (var k in dirList)
-  if (dirList[k] == resourceName) {
+  if (dirList[k] == resourceName+'.js') {
     console.log(`the resource: ${resourceName} is exist`.red);
     return;
   }
