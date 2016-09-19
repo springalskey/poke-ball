@@ -67,7 +67,7 @@ function createViews() {
   console.log(`create module/index file : index.vue success`.green);
 
   // 修改views/index(route).js
-  var content = FileTools.readFile(`${path.SEED_SRC_VIEWS}/index.js`).toString();
+  var content = FileTools.readFile(`${path.SEED_SRC_VIEWS}/route.js`).toString();
   content = content.replace(/\nexport default \[/, `import ${moduleName.firstUppserCase()}Routes from './${moduleName}';\n\nexport default [\n  ...${moduleName.firstUppserCase()}Routes,`);
   FileTools.createFile(`${path.SEED_SRC_VIEWS}/index.js`, content);
 
