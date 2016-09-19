@@ -1,5 +1,5 @@
-import List from './list/index.vue';
+import {upLeafViews} from './{subViews}/{leafViews}';
 
 export default [
-  { path: '/{moduleName}/list', component: List, name: '{moduleName}.list' },
+  { path: '/{views}/{subViews}/{leafViews}', component: {upLeafViewsCom}, name: '{views}.{subViews}.{leafViews}' },
 ];

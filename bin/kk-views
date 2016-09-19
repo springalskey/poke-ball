@@ -38,36 +38,70 @@ if (DirTools.isExist(`${path.SEED_SRC_VIEWS}/${views}/${subViews}/${leafViews}`)
 
 // 子模块存在(叶子模块不存在)，新建:叶子模块
 if (DirTools.isExist(`${path.SEED_SRC_VIEWS}/${views}/${subViews}`)) {
-  createLeafViews(views,subViews,leafViews);
+  createLeafViews(views, subViews, leafViews);
   return;
 }
 
 // 模块存在（子模块&叶子模块不存在），新建:子模块&叶子模块
 if (DirTools.isExist(`${path.SEED_SRC_VIEWS}/${views}`)) {
-  createSubViews(views,subViews);
-  createLeafViews(views,subViews,leafViews);
+  createSubViews(views, subViews, leafViews);
+  createLeafViews(views, subViews, leafViews);
   return;
 }
 
 // 模块&子模块&叶子模块不存在，新建:模块&子模块&叶子模块
 if (!DirTools.isExist(`${path.SEED_SRC_VIEWS}/${views}`)) {
-  createViews(views);
-  createSubViews(views,subViews);
-  createLeafViews(views,subViews,leafViews);
+  createViews(views, subViews, leafViews);
+  createSubViews(views, subViews, leafViews);
+  createLeafViews(views, subViews, leafViews);
   return;
 }
 
-// 新建模块，如果存在直接抛错，return
-function createViews(views) {
+// 新建模块
+function createViews(views, subViews, leafViews) {
+  DirTools.mkDir(`${path.SEED_SRC_VIEWS}/${views}`);
+  console.log(`新建 ${path.SEED_SRC_VIEWS}/${views} success`.green);
 
+  var content = FileTools.readFile(`${path.SEED_SRC_VIEWS}/${views}/index.js`).toString();
+  content = content.replace(/{views}/g, views);
+  content = content.replace(/{subViews}/g, subViews);
+  content = content.replace(/{leafViews}/g, leafViews);
+  content = content.replace(/{upLeafViews}/g, leafViews.firstUppserCase());
+  FileTools.createFile(`${path.SEED_SRC_VIEWS}/${views}/index.js`, content);
+  console.log(`新建 ${path.SEED_SRC_VIEWS}/${views}/index.js success`.green);
+
+  return;
+}
+// 新建子模块
+function createSubViews(views, subViews, leafViews) {
+  DirTools.mkDir(`${path.SEED_SRC_VIEWS}/${views}/${subViews}`);
+  console.log(`新建 ${path.SEED_SRC_VIEWS}/${views}/${subViews} success`.green);
+
+  return;
 }
 
-// 新建子模块，如果存在直接抛错，return
-function createSubViews(views, subViews) {
-
-}
-
-// 新建叶子模块，如果存在直接抛错，return
+// 新建叶子模块
 function createLeafViews(views, subViews, leafViews) {
+  DirTools.mkDir(`${path.SEED_SRC_VIEWS}/${views}/${subViews}/${leafViews}`);
+  console.log(`新建 ${path.SEED_SRC_VIEWS}/${views}/${subViews}/${leafViews} success`.green);
+
+  var content = FileTools.readFile(`${path.CLI_TEM_VIEWS}/leafViews/list.js`).toString();
+  FileTools.createFile(`${path.SEED_SRC_VIEWS}/${views}/${subViews}/${leafViews}/list.js`,content);
+  console.log(`新建 ${path.SEED_SRC_VIEWS}/${views}/${subViews}/${leafViews}/list.js success`.green);
+
+  var content = FileTools.readFile(`${path.CLI_TEM_VIEWS}/leafViews/index.vue`).toString();
+  FileTools.createFile(`${path.SEED_SRC_VIEWS}/${views}/${subViews}/${leafViews}/index.vue`,content);
+  console.log(`新建 ${path.SEED_SRC_VIEWS}/${views}/${subViews}/${leafViews}/index.vue success`.green);
+
+  return;
+}
+
+// 修改路由
+function upateRoutes() {
+
+}
+
+// 修改布局
+function updateLayout() {
 
 }
