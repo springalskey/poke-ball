@@ -4,6 +4,7 @@ export default {
   data () {
     return {
       {moduleName}: [],
+      formFilter: {},
       pagination: {
         currentPage: 1,
         total: 0,
@@ -27,7 +28,7 @@ export default {
     },
     load () {
       Mock
-        .{moduleName}Resource()
+        .postsResource()
         .get({
           _start: (this.pagination.currentPage - 1) * this.pagination.pageSize,
           _limit: this.pagination.pageSize

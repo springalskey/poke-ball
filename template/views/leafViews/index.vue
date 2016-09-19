@@ -1,5 +1,5 @@
 <template>
-  <div class="list">
+  <div class="{moduleName}">
   <% if(config.breadcrumb.length > 0) { %>
     <el-breadcrumb separator="/">
     <% config.breadcrumb.split('/').forEach(function (item) { %>
@@ -120,4 +120,4 @@
     </div>
   </div>
 </template>
-<script src="./list"> </script>
+<script src="./{moduleName}"> </script>
