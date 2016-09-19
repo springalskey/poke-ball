@@ -1,0 +1,148 @@
+#!/usr/bin/env node
+
+var program = require('commander');
+var child_process = require('child_process');
+var colors = require('colors');
+
+var version = require('../package.json').version;
+var FileTools = require('../tools/file.js').FileTools;
+var DirTools = require('../tools/file.js').DirTools;
+var path = require('../tools/path');
+require('../tools/string');
+
+program.parse(process.argv);
+
+var args = program.args;
+var moduleName = args[0];
+
+console.log('kk-module args:', args);
+
+// 判断当前目录是否有效，有没有‘src’目录
+var dirList = DirTools.readDir(process.cwd());
+var isProjectPath = false;
+dirList.forEach(function(el) {
+  if (el == 'src')
+    isProjectPath = true;
+})
+if (!isProjectPath) {
+  console.log('this is not a valid path'.red);
+  return;
+}
+
+/** 判断参数是否有‘／’符号，如果有创建subviews **/
+if (moduleName.indexOf('/') != -1) {
+  createSubViews(moduleName);
+  return;
+}
+
+createViews();
+
+// create views
+function createViews() {
+  /** kk views start **/
+  //判断需要创建的模块是否存在
+  if (DirTools.isExist(`${path.SEED_SRC_VIEWS}/${moduleName}`)) {
+    console.log('该模块已存在'.red);
+    return;
+  }
+
+  // 创建views/module Dir
+  DirTools.mkDir(`${path.SEED_SRC_VIEWS}/${moduleName}`);
+  console.log(`create module directory ${moduleName} success`.green);
+
+  // 创建views/module/list Dir
+  DirTools.mkDir(`${path.SEED_SRC_VIEWS}/${moduleName}/list`);
+  console.log(`create module/list directory ${moduleName}/list success`.green);
+
+  // 创建views/module/index.js文件
+  var content = FileTools.readFile(`${path.CLI_TEM_VIEWS}/index.js`).toString();
+  content = content.replace(/{moduleName}/g, moduleName);
+  FileTools.createFile(`${path.SEED_SRC_VIEWS}/${moduleName}/index.js`, content);
+  console.log(`create module file : index.js success`.green);
+
+  // 创建views/module/list/index.vue 文件
+  var content = FileTools.readFile(`${path.CLI_TEM_VIEWS}/list/index.vue`).toString();
+  content = content.replace(/{moduleName}/g, moduleName + '/list');
+  FileTools.createFile(`${path.SEED_SRC_VIEWS}/${moduleName}/list/index.vue`, content);
+  console.log(`create module/index file : index.vue success`.green);
+
+  // 修改views/index(route).js
+  var content = FileTools.readFile(`${path.SEED_SRC_VIEWS}/route.js`).toString();
+  content = content.replace(/\nexport default \[/, `import ${moduleName.firstUppserCase()}Routes from './${moduleName}';\n\nexport default [\n  ...${moduleName.firstUppserCase()}Routes,`);
+  FileTools.createFile(`${path.SEED_SRC_VIEWS}/index.js`, content);
+
+  // 修改layout/sideMenu.vue
+  var content = FileTools.readFile(`${path.SEED_SRC_VIEWS}/layout/sideMenu.vue`).toString();
+  content = content.replace(/<\/el-menu>/,
+    `  <el-submenu index="sub_2">
+          <template slot="title"><i class="el-icon-menu"></i>${moduleName}</template>
+          <el-menu-item index="/${moduleName}/list">list</el-menu-item>
+          <!-- subviews:${moduleName} -->
+        </el-submenu>
+      <\/el-menu>`);
+  FileTools.createFile(`${path.SEED_SRC_VIEWS}/layout/sideMenu.vue`, content);
+  /** kk views end **/
+  console.log(`create  module: ${moduleName} success`.green);
+}
+
+// create subViews
+function createSubViews(moduleName) {
+  var subModuleName = moduleName.split('/')[1];
+  var moduleName = moduleName.split('/')[0];
+
+  //判断需要创建的模块是否存在
+  if (!DirTools.isExist(`${path.SEED_SRC_VIEWS}/${moduleName}`)) {
+    console.log('该模块不存在'.red);
+    return;
+  }
+  // 判断需要创建的子模块是否存在
+  if (DirTools.isExist(`${path.SEED_SRC_VIEWS}/${moduleName}/${subModuleName}`)) {
+    console.log('该子模块已经存在'.red);
+    return;
+  }
+
+  // 创建子模块文件夹
+  DirTools.mkDir(`${path.SEED_SRC_VIEWS}/${moduleName}/${subModuleName}`);
+  console.log(`create views/${moduleName}/${subModuleName} success`.green);
+
+  // 创建子模块index.vue文件
+  var content = FileTools.readFile(`${path.CLI_TEM_VIEWS}/list/index.vue`).toString();
+  content = content.replace('{moduleName}', moduleName + '/' + subModuleName);
+  FileTools.createFile(`${path.SEED_SRC_VIEWS}/${moduleName}/${subModuleName}/index.vue`, content);
+  console.log(`create views/${moduleName}/${subModuleName}/index.vue success`.green);
+
+  // 修改模块路由
+  var content = FileTools.readFile(`${path.SEED_SRC_VIEWS}/${moduleName}/index.js`).toString();
+  content = content.replace(/\nexport default \[/, `import ${subModuleName.firstUppserCase()} from './${subModuleName}/index.vue';\n\nexport default [\n  { path: '/${moduleName}/${subModuleName}', component: ${subModuleName.firstUppserCase()}, name: '${moduleName}.${subModuleName}' },`);
+  FileTools.createFile(`${path.SEED_SRC_VIEWS}/${moduleName}/index.js`, content);
+  console.log(`update views/${moduleName}/index.js success`.green);
+
+  // 修改layout/sideMenu
+  var content = FileTools.readFile(`${path.SEED_SRC_VIEWS}/layout/sideMenu.vue`).toString();
+  content = content.replace(`<!-- subviews:${moduleName} -->`,
+    `<el-menu-item index="/${moduleName}/${subModuleName}">${subModuleName}</el-menu-item>
+        <!-- subviews:${moduleName} -->`);
+  FileTools.createFile(`${path.SEED_SRC_VIEWS}/layout/sideMenu.vue`, content);
+}
+
+// todo: create leafViews
+function createLeafViews() {
+
+}
+
+// deprecated: create vuex action,目前新建一个module／views不一定要走对应的action
+function createVuex() {
+  /** VUEX **/
+  // 创建 vuex action
+  var content = FileTools.readFile(`${path.CLI_TEM_VUEX}/action.js`).toString();
+  content = content.replace(/{moduleName}/g, moduleName);
+  content = content.replace(/{MODULENAME}/g, moduleName.toUpperCase());
+  FileTools.createFile(`${path.SEED_SRC_VUEX}/actions/${moduleName}Action.js`, content);
+  console.log(`create vuex action file:${moduleName}Action.js success`.green);
+
+  // 创建 vuex modules
+  var content = FileTools.readFile(`${path.CLI_TEM_VIEWS}/index.js`).toString();
+  content = content.replace(/{MODULENAME}/g, moduleName.toUpperCase());
+  FileTools.createFile(`${path.SEED_SRC_VUEX}/modules/${moduleName}Mutation.js`, content);
+  console.log(`create vuex modules file:${moduleName}Mutation.js success`.green);
+}
