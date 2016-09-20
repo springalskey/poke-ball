@@ -18,11 +18,9 @@ program.parse(process.argv);
 
 var args = program.args;
 var moduleName = args[0];
-
 var data = moduleName.split('/');
-var length = data.length;
 
-if (length != 3) {
+if (data.length != 3) {
   console.log('请输入完整的3级路径，如:kk views siri/order/list'.red);
   return;
 }
@@ -60,49 +58,54 @@ if (!DirTools.isExist(`${path.SEED_SRC_VIEWS}/${views}`)) {
 
 // create模块
 function createViews(views, subViews, leafViews) {
+  // 新建 src/views/{moduleName}文件夹
   DirTools.mkDir(`${path.SEED_SRC_VIEWS}/${views}`);
   console.log(`create ${path.SEED_SRC_VIEWS}/${views} success`.green);
 
-  var content = FileTools.readFile(`${path.CLI_TEM_VIEWS}/menu.vue`).toString();
-  content = content.replace(/{views}/g, views);
-  content = content.replace(/{subViews}/g, subViews);
-  content = content.replace(/{leafViews}/g, leafViews);
-  content = content.replace(/{upViews}/g, leafViews.firstUppserCase());
-  FileTools.createFile(`${path.SEED_SRC_VIEWS}/layout/menus/${views}Menu.vue`, content);
-  console.log(`create ${path.SEED_SRC_VIEWS}/layout/menus/${views}Menu.vue success`.green);
-
+  // 新建 src/views/{moduleName}/index.js文件
   var content = FileTools.readFile(`${path.CLI_TEM_VIEWS}/index.js`).toString();
-  content = content.replace(/{views}/g, views);
-  content = content.replace(/{subViews}/g, subViews);
-  content = content.replace(/{leafViews}/g, leafViews);
-  content = content.replace(/{upLeafViews}/g, leafViews.firstUppserCase());
   FileTools.createFile(`${path.SEED_SRC_VIEWS}/${views}/index.js`, content);
   console.log(`create ${path.SEED_SRC_VIEWS}/${views}/index.js success`.green);
 
+  // 新建 src/layout/menus/{moduleName}Menu.vue 文件
+  var content = FileTools.readFile(`${path.CLI_TEM_VIEWS}/menu.vue`).toString();
+  content = content.replace(`{upViews}`,views.firstUppserCase());
+  FileTools.createFile(`${path.SEED_SRC_VIEWS}/layout/menus/${views}Menu.vue`, content);
+  console.log(`create ${path.SEED_SRC_VIEWS}/layout/menus/${views}Menu.vue success`.green);
+
+  // 修改 src/views/index.js文件
   updateRootRoute(views, subViews, leafViews);
 
+  // 修改 src/views/layout/index.vue 布局文件
   updateLayout(views, subViews, leafViews);
 
   return;
 }
+
 // create子模块
 function createSubViews(views, subViews, leafViews) {
+  // 新建 src/views/moduleName/subModuleName/文件夹
   DirTools.mkDir(`${path.SEED_SRC_VIEWS}/${views}/${subViews}`);
   console.log(`create ${path.SEED_SRC_VIEWS}/${views}/${subViews} success`.green);
 
+  // todo:修改src/layout/menus/{moduleName}Menu.vue 文件
+  updateLayoutSubMenu(views, subViews, leafViews);
   return;
 }
 
 // create叶子模块
 function createLeafViews(views, subViews, leafViews) {
+  // 新建 叶子模块文件夹
   DirTools.mkDir(`${path.SEED_SRC_VIEWS}/${views}/${subViews}/${leafViews}`);
   console.log(`create ${path.SEED_SRC_VIEWS}/${views}/${subViews}/${leafViews} success`.green);
 
+  // 新建 叶子模块文件夹下的 {leafViews}.js文件
   var content = FileTools.readFile(`${path.CLI_TEM_VIEWS}/leafViews/list.js`).toString();
   content = content.replace(/{moduleName}/g, views);
   FileTools.createFile(`${path.SEED_SRC_VIEWS}/${views}/${subViews}/${leafViews}/${leafViews}.js`, content);
   console.log(`create ${path.SEED_SRC_VIEWS}/${views}/${subViews}/${leafViews}/${leafViews}.js success`.green);
 
+  // 新建 叶子模块文件夹下的 index.vue,使用ejs模版
   var content = FileTools.readFile(`${path.CLI_TEM_VIEWS}/leafViews/index.vue`).toString();
   var config = require('../template/views/config.json');
   config.moduleName = leafViews;
@@ -111,16 +114,46 @@ function createLeafViews(views, subViews, leafViews) {
   FileTools.createFile(`${path.SEED_SRC_VIEWS}/${views}/${subViews}/${leafViews}/index.vue`, content);
   console.log(`create ${path.SEED_SRC_VIEWS}/${views}/${subViews}/${leafViews}/index.vue success`.green);
 
+  // 修改 src/views/{moduleName}/index.js
+  updateModuleRoute(views, subViews, leafViews);
+
+  // 修改 src/views/layout/menus/{leafViews}Menu.vue
+  updateLayoutMenu(views, subViews, leafViews);
   return;
 }
 
-// ejs渲染模版
-function renderHtml(str, config) {
-  var data = ejs.compile(str)({
-    config: config
-  });
-  data = data.replace(/^\s*[\r\n]/gm, "");
-  return data;
+// 在添加一个叶子模块时：修改 src/views/{moduleName}/index.js 模块路由文件
+function updateModuleRoute(views, subViews, leafViews) {
+  var content = FileTools.readFile(`${path.SEED_SRC_VIEWS}/${views}/index.js`).toString();
+  content = content.replace(/export default \[/,
+    `import ${subViews.firstUppserCase()}${leafViews.firstUppserCase()} from './${subViews}/${leafViews}';
+
+export default [
+  { path: '/${views}/${subViews}/${leafViews}', component: ${subViews.firstUppserCase()}${leafViews.firstUppserCase()}, name: '${views}.${subViews}.${leafViews}' },`);
+  FileTools.createFile(`${path.SEED_SRC_VIEWS}/${views}/index.js`, content);
+}
+
+// 添加一个叶子模块时：修改 src/views/layout/menus/{moduleName}Menu.vue
+function updateLayoutMenu(views, subViews, leafViews) {
+  var content = FileTools.readFile(`${path.SEED_SRC_VIEWS}/layout/menus/${views}Menu.vue`).toString();
+  content = content.replace(`<!-- ${subViews} inject -->`,
+    `<el-menu-item index="/${views}/${subViews}/${leafViews}" v-kk-permission="'${views}.${subViews}.${leafViews}'">${leafViews}</el-menu-item>
+        <!-- ${subViews} inject -->`);
+  FileTools.createFile(`${path.SEED_SRC_VIEWS}/layout/menus/${views}Menu.vue`, content);
+}
+
+// 添加一个子模块时：修改src/views/layout/menus/{moduleName}Menu.vue
+function updateLayoutSubMenu(views, subViews, leafViews) {
+  var content = FileTools.readFile(`${path.SEED_SRC_VIEWS}/layout/menus/${views}Menu.vue`).toString();
+  content  = content.replace(`</el-menu>`,
+  `  <el-submenu index="${subViews}">
+        <template slot="title"><i class="el-icon-menu"></i>${subViews}</template>
+        <!-- ${subViews} inject -->
+      </el-submenu>
+    </el-menu>`);
+  FileTools.createFile(`${path.SEED_SRC_VIEWS}/layout/menus/${views}Menu.vue`,content);
+
+  return;
 }
 
 // 在添加一个大模块时，修改src/views/index.js路由文件
@@ -140,11 +173,6 @@ export default [
   FileTools.createFile(`${path.SEED_SRC_VIEWS}/index.js`, content);
 }
 
-// 在添加一个叶子模块时：修改 src/views/siri/index.js 模块路由文件
-function updateModuleRoute() {
-
-}
-
 // 在添加一个大模块时： 修改 src/views/layout/index.vue 布局文件
 function updateLayout(views, subViews, leafViews) {
   var content = FileTools.readFile(`${path.SEED_SRC_VIEWS}/layout/index.vue`).toString();
@@ -152,4 +180,13 @@ function updateLayout(views, subViews, leafViews) {
     `  <el-menu-item index="/${views}"><i class="el-icon-message"></i>${views}</el-menu-item>
       <\/el-menu>`);
   FileTools.createFile(`${path.SEED_SRC_VIEWS}/layout/index.vue`, content);
+}
+
+// ejs渲染模版
+function renderHtml(str, config) {
+  var data = ejs.compile(str)({
+    config: config
+  });
+  data = data.replace(/^\s*[\r\n]/gm, "");
+  return data;
 }
