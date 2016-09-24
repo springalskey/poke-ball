@@ -99,19 +99,24 @@ function createLeafViews(views, subViews, leafViews) {
   DirTools.mkDir(`${path.SEED_SRC_VIEWS}/${views}/${subViews}/${leafViews}`);
   console.log(`create ${path.SEED_SRC_VIEWS}/${views}/${subViews}/${leafViews} `.green);
 
+  var config;
+  if(FileTools.isExist(`${path.SEED_ROOT_PATH}/cli_tem_config.json`)){
+    config = require(`${path.SEED_ROOT_PATH}/cli_tem_config.json`);
+  }else {
+    config = require('../template/views/config.json');
+  }
+
   // 新建 叶子模块文件夹下的 {leafViews}.js文件
-  var content = FileTools.readFile(`${path.CLI_TEM_VIEWS}/leafViews/list.js`).toString();
-  content = content.replace(/{moduleName}/g, views.toLittleCamelCase());
-  FileTools.createFile(`${path.SEED_SRC_VIEWS}/${views}/${subViews}/${leafViews}/${leafViews}.js`, content);
+  var listContent = FileTools.readFile(`${path.CLI_TEM_VIEWS}/leafViews/list.js`).toString();
+  listContent = listContent.replace(/{moduleName}/g, views.toLittleCamelCase());
+  listContent = listContent.replace(/{ModuleName}/g, views.toBigCamelCase());
+  listContent = renderHtml(listContent, config);
+  FileTools.createFile(`${path.SEED_SRC_VIEWS}/${views}/${subViews}/${leafViews}/${leafViews}.js`, listContent);
   console.log(`create ${path.SEED_SRC_VIEWS}/${views}/${subViews}/${leafViews}/${leafViews}.js `.green);
 
   // 新建 叶子模块文件夹下的 index.vue,使用ejs模版
   var content = FileTools.readFile(`${path.CLI_TEM_VIEWS}/leafViews/index.vue`).toString();
-  if(FileTools.isExist(`${path.SEED_ROOT_PATH}/cli_tem_config.json`)){
-    var config = require(`${path.SEED_ROOT_PATH}/cli_tem_config.json`);
-  }else {
-    var config = require('../template/views/config.json');
-  }
+  
   config.moduleName = leafViews;
   content = renderHtml(content, config);
   content = content.replace(/{moduleName}/g, leafViews);
