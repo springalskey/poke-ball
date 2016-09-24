@@ -7,6 +7,16 @@
     <% }) %>
     </el-breadcrumb>
   <% } %>
+    <el-row class="page-title m-b-20">
+      <el-col :span="20"><h2>蜂巢列表</h2></el-col>
+      <el-col :span="4">
+        <el-button type="primary"
+          @click.native.prevent="createHive"
+          class="m-t-15 pull-right">
+          创建蜂巢
+        </el-button>
+      </el-col>
+    </el-row>
     <el-form
       class="horizontal-form-item clearfix"
       @submit.native.prevent="handleSearch(formFilter)"
